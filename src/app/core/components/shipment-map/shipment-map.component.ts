@@ -65,7 +65,6 @@ export class ShipmentMapComponent implements OnInit {
       let shipmentStatus = this.shipment.getShipmentsData().getShipment_status()
       switch(shipmentStatus) {
         case Constants.BOOKED_STATUS_ID: {
-          // TODO => dropMarker
           let warehouseLat = this.shipment.getShipmentsData().getShipment_warehouse_latitude();
           let warehouseLon = this.shipment.getShipmentsData().getShipment_warehouse_longitude();
 
@@ -74,7 +73,6 @@ export class ShipmentMapComponent implements OnInit {
           break;
         }
         case Constants.TRANSIT_STATUS_ID: {
-          // TODO => animate Flight
           let startpoint = [
             this.shipment.getShipmentsData().getShipment_warehouse_latitude(),
             this.shipment.getShipmentsData().getShipment_warehouse_longitude()
@@ -87,7 +85,7 @@ export class ShipmentMapComponent implements OnInit {
           break;
         }
         case Constants.DELIVERED_STATUS_ID: {
-          // TODO => drop DELIVERED_STATUS_ID Marker
+
           let shipmentLat = this.shipment.getShipmentsData().getShipment_latitude();
           let shipmentLon = this.shipment.getShipmentsData().getShipment_longitude();
 
@@ -164,9 +162,6 @@ export class ShipmentMapComponent implements OnInit {
       }] 
     })
     this.planePath.setPath(this.planePath.getPath());
- 
-    // Ensure the plane is in the center of the screen
-    // this.map.panTo(nextPoint);
   
     if(this.animIndex >= 100) {
       window.cancelAnimationFrame(this.animLoop);
