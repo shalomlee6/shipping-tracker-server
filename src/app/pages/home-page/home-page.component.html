@@ -1,23 +1,21 @@
 <div class="container">
 
     <div class="top-panel">
-        <div id="map"></div>
-        <div class="shipments-status-ctrl">        
-            <h1>shalom</h1>
-            <button (click)="addFlight()" >Flight</button>
-            <button (click)="getShipments()" >getShipmentUpdates</button>
-            
-        </div>
+
+        <app-shipment-map
+        [shipment]="shipment"
+        ></app-shipment-map>
+
+        <app-shipment-status-ctr
+        (shipments)="onShipmentsByStatusEvent($event)"
+        ></app-shipment-status-ctr>
+
     </div>
 
     <div class="bottom-panel">
-        <app-shipments-table
-        [shipments]="shipments"
-        ></app-shipments-table>
-        <!-- <app-shipment [shipment]="shipment" *ngFor="let shipment of shipments"></app-shipment> -->
-        <!-- <div class="menu">
-            
-            
-        </div> -->
+        <app-shipment-list
+        [shipmentListUpdate]="shipmentListUpdate"
+        (shipmentRecord)="onShipmentClickEvent($event)"
+        ></app-shipment-list>
     </div>
 </div>

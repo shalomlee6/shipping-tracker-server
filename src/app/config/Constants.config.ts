@@ -40,6 +40,11 @@ export class Constants {
 
     // Shipment Model 
     public static readonly SHIPMENT_MODEL_ID: string = "shipmentsDataArray"
+    public static readonly INVALID_VALUE: string = "---";
+    public static readonly BOOKED_STATUS_ID = "Booked"
+    public static readonly TRANSIT_STATUS_ID = "In Transit"
+    public static readonly DELIVERED_STATUS_ID = "Delivered"
+
 }
 
 

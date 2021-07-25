@@ -1,3 +1,4 @@
+import { Constants } from "src/app/config/Constants.config";
 import { ShipmentModel } from "./shipment.model";
 
 export class ShipmentsData {
@@ -12,7 +13,7 @@ export class ShipmentsData {
     private shipment_city!: string 
     private shipment_warehouse !: string 
     private shipment_warehouse_latitude!: number
-    private shipment_warehouse_lomgitude!: number
+    private shipment_warehouse_longitude!: number
 
     constructor(
         shipment_id: string,
@@ -25,7 +26,7 @@ export class ShipmentsData {
         shipment_city: string ,
         shipment_warehouse : string ,
         shipment_warehouse_latitude: number,
-        shipment_warehouse_lomgitude: number,
+        shipment_warehouse_longitude: number,
     ){
         this.shipment_id  = shipment_id;
         this.shipment_status =shipment_status;
@@ -37,7 +38,7 @@ export class ShipmentsData {
         this.shipment_city=shipment_city;
         this.shipment_warehouse=shipment_warehouse;
         this.shipment_warehouse_latitude=shipment_warehouse_latitude;
-        this.shipment_warehouse_lomgitude=shipment_warehouse_lomgitude;
+        this.shipment_warehouse_longitude=shipment_warehouse_longitude;
     }
 
     public getShipment_id(): string {
@@ -81,11 +82,13 @@ export class ShipmentsData {
     }
 
     public getShipment_state(): string | undefined {
-        return this.shipment_state;
+
+        return this.shipment_state ? this.shipment_state : Constants.INVALID_VALUE;
     }
 
     public setShipment_state(shipment_state: string): void {
-        this.shipment_state = shipment_state;
+        
+        this.shipment_state = shipment_state ? shipment_state : Constants.INVALID_VALUE;
     }
 
     public getShipment_country(): string {
@@ -120,12 +123,12 @@ export class ShipmentsData {
         this.shipment_warehouse_latitude = shipment_warehouse_latitude;
     }
 
-    public getShipment_warehouse_lomgitude(): number {
-        return this.shipment_warehouse_lomgitude;
+    public getShipment_warehouse_longitude(): number {
+        return this.shipment_warehouse_longitude;
     }
 
-    public setShipment_warehouse_lomgitude(shipment_warehouse_lomgitude: number): void {
-        this.shipment_warehouse_lomgitude = shipment_warehouse_lomgitude;
+    public setShipment_warehouse_longitude(shipment_warehouse_lomgitude: number): void {
+        this.shipment_warehouse_longitude = shipment_warehouse_lomgitude;
     }
 
 

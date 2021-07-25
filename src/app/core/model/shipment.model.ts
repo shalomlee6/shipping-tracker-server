@@ -13,7 +13,7 @@ export class ShipmentModel{
     generateShipment(shipments: any) {
 
         this.shipmentsData = new ShipmentsData(
-            shipments.shipment_id.$oid,
+            shipments._id,
             shipments.shipment_status,
             shipments.shipment_place,
             shipments.shipment_latitude,
@@ -23,7 +23,7 @@ export class ShipmentModel{
             shipments.shipment_city,
             shipments.shipment_warehouse,
             shipments.shipment_warehouse_latitude,
-            shipments.shipment_warehouse_lomgitude
+            shipments.shipment_warehouse_longitude
         );
         this.shipmentDetails = new ShipmentDetails(
             shipments.client_id,

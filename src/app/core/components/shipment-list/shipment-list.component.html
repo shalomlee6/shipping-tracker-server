@@ -1,0 +1,98 @@
+<div class="example-container mat-elevation-z8">
+    <div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+            Shipping-Tracker API rate limit has been reached..
+        </div>
+    </div>
+
+    <div class="example-table-container">
+
+        <table mat-table [dataSource]="displayArray" class="example-table" matSort matSortActive="shipment_status"
+            matSortDisableClear matSortDirection="desc">
+
+            <!-- TODO Dynamic ngfor -->
+            <!-- <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                <th mat-header-cell *matHeaderCellDef>
+                  {{column.header}}
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{column.cell(row)}}
+                </td>
+            </ng-container> -->
+
+            <!-- shipment_id Column -->
+            <ng-container matColumnDef="shipment_id">
+                <th class="table-header" mat-header-cell *matHeaderCellDef>#Shipment Id</th>
+                <td class="table-row" mat-cell *matCellDef="let shipment">{{shipment.shipment_id}}</td>
+            </ng-container>
+
+            <!-- shipment_place Column -->
+            <ng-container matColumnDef="shipment_place">
+                <th class="table-header" mat-header-cell *matHeaderCellDef>place</th>
+                <td class="table-row" mat-cell *matCellDef="let shipment">{{shipment.shipment_place}}</td>
+            </ng-container>
+
+            <!-- shipment_country Column -->
+            <ng-container matColumnDef="shipment_country">
+                <th class="table-header" mat-header-cell *matHeaderCellDef>country</th>
+                <td class="table-row" mat-cell *matCellDef="let shipment">{{shipment.shipment_country}}</td>
+            </ng-container>
+            
+            <!-- shipment_city Column -->
+            <ng-container matColumnDef="shipment_city">
+                <th class="table-header" mat-header-cell *matHeaderCellDef>city</th>
+                <td class="table-row" mat-cell *matCellDef="let shipment">{{shipment.shipment_city}}</td>
+            </ng-container>
+
+            <!-- shipment_warehouse Column -->
+            <ng-container matColumnDef="shipment_warehouse">
+                <th class="table-header" mat-header-cell *matHeaderCellDef>Warehouse</th>
+                <td class="table-row" mat-cell *matCellDef="let shipment">{{shipment.shipment_warehouse}}</td>
+            </ng-container>
+            
+            <!-- shipment_warehouse_latitude Column -->
+            <ng-container matColumnDef="shipment_warehouse_latitude">
+                <th class="table-header" mat-header-cell *matHeaderCellDef>Warehouse Latitude</th>
+                <td class="table-row" mat-cell *matCellDef="let shipment">{{shipment.shipment_warehouse_latitude}}</td>
+            </ng-container>
+
+            <!-- shipment_warehouse_longitude Column -->
+            <ng-container matColumnDef="shipment_warehouse_longitude">
+                <th class="table-header" mat-header-cell *matHeaderCellDef>Warehouse Longitude</th>
+                <td class="table-row" mat-cell *matCellDef="let shipment">{{shipment.shipment_warehouse_longitude}}</td>
+            </ng-container>
+
+            <!-- shipment_state Column -->
+            <ng-container matColumnDef="shipment_state">
+                <th class="table-header" mat-header-cell *matHeaderCellDef>state</th>
+                <td class="table-row" mat-cell *matCellDef="let shipment">{{shipment.shipment_state}}</td>
+            </ng-container>
+            <!-- shipment_latitude Column -->
+            <ng-container matColumnDef="shipment_latitude">
+                <th class="table-header" mat-header-cell *matHeaderCellDef>shipment latitude</th>
+                <td class="table-row" mat-cell *matCellDef="let shipment">{{shipment.shipment_latitude}}</td>
+            </ng-container>
+            <!-- shipment_longitude Column -->
+            <ng-container matColumnDef="shipment_longitude">
+                <th class="table-header" mat-header-cell *matHeaderCellDef>shipment longitude</th>
+                <td class="table-row" mat-cell *matCellDef="let shipment">{{shipment.shipment_longitude}}</td>
+            </ng-container>
+
+            <!-- shipment_status Column -->
+            <ng-container matColumnDef="shipment_status">
+                <th   mat-header-cell *matHeaderCellDef mat-sort-header disableClear> status</th>
+                <td  mat-cell *matCellDef="let row">{{row.shipment_status }}</td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr 
+            mat-row
+            (click)="getRecord(row)"
+            *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+    <mat-paginator [length]="resultsLength" [pageSize]="30"></mat-paginator>
+</div>

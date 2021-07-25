@@ -1,16 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ShipmentsTableComponent } from '../../components/shipments-table/shipments-table.component';
 import {MatTableModule} from '@angular/material/table';
 import { HttpClientModule } from '@angular/common/http';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { ShipmentListComponent } from '../../components/shipment-list/shipment-list.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatButtonModule} from '@angular/material/button';
+
 
 
 
 @NgModule({
   declarations: [
-    ShipmentsTableComponent
+    ShipmentListComponent,
   ],
   imports: [
     CommonModule,
@@ -18,9 +21,12 @@ import { MatSortModule } from '@angular/material/sort';
     HttpClientModule,
     MatPaginatorModule,
     MatSortModule,
+    MatProgressSpinnerModule,
+    MatButtonModule
   ],
   exports: [
-    ShipmentsTableComponent
+    ShipmentListComponent,
+    MatButtonModule
   ]
 })
 export class CoreModule { }
