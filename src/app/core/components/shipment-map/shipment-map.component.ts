@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/config/Constants.config';
 import { ShipmentList } from '../../model/shipment-list.model';
 import { ShipmentModel } from '../../model/shipment.model';
+import { ApiService } from '../../services/api/api.service';
 import { MapService } from '../../services/map/map.service';
 
 @Component({
@@ -21,6 +22,7 @@ export class ShipmentMapComponent implements OnInit {
   startPoint!: google.maps.LatLng;
   planeSymbol!: { path: string; fillColor: string; fillOpacity: number; scale: number; anchor: google.maps.Point; strokeWeight: number; };
   animIndex = 0;
+  shipmentId!: string;
   animLoop!: number;
   isAnimLoopRuning = false;
   loader!: Promise<any>;
@@ -29,7 +31,7 @@ export class ShipmentMapComponent implements OnInit {
   mapUpdatesSubscription!: Subscription;
   @Input() shipment?: ShipmentModel;
 
-  constructor(private mapService: MapService) { }
+  constructor(private mapService: MapService, private apiService: ApiService) { }
 
   ngOnInit(): void {
     this.markers = [];
@@ -62,6 +64,7 @@ export class ShipmentMapComponent implements OnInit {
 
   ngOnChanges(simpleChange: SimpleChange) {
     if(this.shipment) {
+      this.shipmentId = this.shipment.getShipmentsData().getShipment_id();
       let shipmentStatus = this.shipment.getShipmentsData().getShipment_status()
       switch(shipmentStatus) {
         case Constants.BOOKED_STATUS_ID: {
@@ -164,18 +167,37 @@ export class ShipmentMapComponent implements OnInit {
     this.planePath.setPath(this.planePath.getPath());
   
     if(this.animIndex >= 100) {
+      // end animation
       window.cancelAnimationFrame(this.animLoop);
       this.animIndex = 0;
       this.trailPath.setVisible(false);
       this.planePath.setVisible(false);
 
-      this.dropDeliveredMarker(nextPoint.lat(),nextPoint.lng() );
-
+      // drop Marker
+      this.onFinishFlightAnimation(nextPoint.lat(),nextPoint.lng())
+     
     }else{
       this.animLoop = window.requestAnimationFrame(() =>{
         this.tick(startPoint, endPoint);
       });
     }
+  }
+  
+  onFinishFlightAnimation(lat: number, lan: number) {
+
+    this.apiService.updateShipmentById( this.shipmentId ).toPromise().then(
+      (res:any) => {
+        let shipmentId = res?.shipmentId ? res?.shipmentId : "---"; 
+        let msg = res?.msg ? res?.msg : "---"
+        console.log(msg)
+        this.shipment?.getShipmentsData().setShipment_status(Constants.DELIVERED_STATUS_ID);
+        this.dropDeliveredMarker(lat,lan );
+      }
+    ).catch(
+      err => {
+        console.log(err)
+      }
+    )
   }
 
   dropMarker(lat: number, lan: number) {
@@ -244,19 +266,19 @@ export class ShipmentMapComponent implements OnInit {
     let mail = this.shipment?.getShipmentDetails().getEmail();
     let first = this.shipment?.getShipmentDetails().getFirst_name();
     let last = this.shipment?.getShipmentDetails().getLast_name();
-
-    //TODO => update record to delivered 
+    let status = this.shipment?.getShipmentsData().getShipment_status();
     return '<div id="content" style="max-width: 400px;">' +
     '<div id="siteNotice">' +
     "</div>" +
     '<h5 id="firstHeading" class="firstHeading" style="margin: 0;color: lightgreen;font-size: 20px;">' + `Delivered` + '</h5>' +
     '<div id="bodyContent" style="display: grid; grid-template-columns: 1fr 1fr ">' +
-    '<div class="left" style="display: flex;flex-direction: column;">' + 
-    "<span>" + "<b>Destenation City:</b>" + `${mail}` + "</span>" +
-    "<span>" + "<b>Destenation Country:</b>" + `${first}` + "</span>" +
-    "<span>" + "<b>Destenation Street Address:</b>" + `${last}` + "</span>" +
+    '<div class="left" style="display: flex;flex-direction: column;text-align: left;">' + 
+    "<span>" + "<b>First Name: </b>" + `${first}` + "</span>" +
+    "<span>" + "<b>Last Name: </b>" + `${last}` + "</span>" +
+    "<span>" + "<b>Email: </b>" + `${mail}` + "</span>" +
+    "<span>" + "<b>Shipment Status: </b>" + `${status}` + "</span>" +
     '</div>' +
-    '<div class="right"> '+ 
+    '<div class="right" style="display: flex;flex-direction: column;text-align: left;"> '+ 
     "<span>" + "<b>Destenation City:</b>" + `${city}` + "</span>" +
     "<span>" + "<b>Destenation Country:</b>" + `${country}` + "</span>" +
     "<span>" + "<b>Destenation Street Address:</b>" + `${street}` + "</span>" +
@@ -273,21 +295,24 @@ export class ShipmentMapComponent implements OnInit {
     let mail = this.shipment?.getShipmentDetails().getEmail();
     let first = this.shipment?.getShipmentDetails().getFirst_name();
     let last = this.shipment?.getShipmentDetails().getLast_name();
-
+    let status = this.shipment?.getShipmentsData().getShipment_status();
     return '<div id="content" style="max-width: 400px;">' +
     '<div id="siteNotice">' +
     "</div>" +
     '<h5 id="firstHeading" class="firstHeading" style="margin: 0;color: lightgreen;font-size: 20px;">' + `${header}` + '</h5>' +
     '<div id="bodyContent" style="display: grid; grid-template-columns: 1fr 1fr ">' +
-    '<div class="left" style="display: flex;flex-direction: column;">' + 
-    "<span>" + "<b>Destenation City:</b>" + `${mail}` + "</span>" +
-    "<span>" + "<b>Destenation Country:</b>" + `${first}` + "</span>" +
-    "<span>" + "<b>Destenation Street Address:</b>" + `${last}` + "</span>" +
+    '<div class="left" style="display: flex;flex-direction: column;text-align: left;">' + 
+    "<span>" + "<b>First Name: </b>" + `${first}` + "</span>" +
+    "<span>" + "<b>Last Name: </b>" + `${last}` + "</span>" +
+    "<span>" + "<b>Email: </b>" + `${mail}` + "</span>" +
+    "<span>" + "<b>Shipment Status: </b>" + `${status}` + "</span>" +
+
+    
     '</div>' +
-    '<div class="right"> '+ 
-    "<span>" + "<b>Destenation City:</b>" + `${city}` + "</span>" +
-    "<span>" + "<b>Destenation Country:</b>" + `${country}` + "</span>" +
-    "<span>" + "<b>Destenation Street Address:</b>" + `${street}` + "</span>" +
+    '<div class="right" style="display: flex;flex-direction: column;text-align: left;"> '+ 
+    "<span>" + "<b>Destenation City: </b>" + `${city}` + "</span>" +
+    "<span>" + "<b>Destenation Country: </b>" + `${country}` + "</span>" +
+    "<span>" + "<b>Destenation Street Address: </b>" + `${street}` + "</span>" +
     '</div>' +
     "</div>" +
     "</div>";

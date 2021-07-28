@@ -41,4 +41,15 @@ export class ApiService {
     let path = "/api/getShipmentStatusBySize"
     return this.http.get(this.apiURL + path , {headers,params})
   }
+
+  updateShipmentById(id: string) {
+    let headers = this.defaultHeaders
+    let params = new HttpParams({
+      fromObject: {
+        shipmentId: id
+      } 
+    });
+    let path = "/api/updateShipmentStatus"
+    return this.http.get(this.apiURL + path , {headers,params})
+  }
 }

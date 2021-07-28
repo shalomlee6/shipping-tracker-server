@@ -7,3 +7,7 @@ h3 {
     font-size: 22px;
     font-weight: 600;
 }
+
+ .gm-style-i, .gm-style-iw-c {
+    padding: 0;
+}
