@@ -258,7 +258,7 @@ export class ShipmentMapComponent implements OnInit {
     this.markers.push(marker);
   }
 
-
+  // TODO => use EJS from Node
   generateDeliveredMarkerLayout() {
     let city = this.shipment?.getShipmentDetails().getDestenation_city();
     let country = this.shipment?.getShipmentDetails().getDestenation_country()
@@ -286,7 +286,8 @@ export class ShipmentMapComponent implements OnInit {
     "</div>" +
     "</div>";
   }
-
+  
+  // TODO => use EJS from Node
   generateMarkerLayout() {
     let header = this.shipment?.getShipmentsData().getShipment_warehouse();
     let city = this.shipment?.getShipmentDetails().getDestenation_city();
